@@ -1,6 +1,7 @@
 <template>
   <div class="visualizer">
     <header :style="{ borderColor: strokeStyle }">
+      <h1>Vizual Audio</h1>
       <section class="controls">
         <label for="fileUpload">Upload:</label>
         <input id="fileUpload" type="file" @change="handleFileUpload" />
@@ -225,9 +226,21 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Playwrite+SK:wght@100..400&display=swap');
+
 .visualizer {
   text-align: center;
   margin-top: 0;
+}
+
+h1 {
+  font-family: "Playwrite SK", cursive;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  padding: 0 0 0.5rem 0;
+  margin: 0 0 0.5rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.3);
 }
 
 label {
@@ -279,6 +292,8 @@ input {
 
 input[type="number"] {
   font-size: 1.25rem;
+  border-radius: 5px;
+  padding-left: 10px;
 }
 
 button {
