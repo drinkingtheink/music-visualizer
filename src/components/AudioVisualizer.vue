@@ -7,7 +7,7 @@
       </button>
       <section class="controls">
         <label for="lineWidth">Line Width:</label>
-        <input type="number" v-model="lineWidth" min="1" max="10" />
+        <input type="number" v-model="lineWidth" min="1" max="30" />
         <label for="strokeStyle">Line Color:</label>
         <input type="color" v-model="strokeStyle" />
       </section>
@@ -22,7 +22,7 @@ import { ref, onMounted } from 'vue';
 
 export default {
   setup() {
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    let audioContext = null;
     const canvas = ref(null);
     const audioBuffer = ref(null);
     const audioSource = ref(null);
@@ -36,6 +36,7 @@ export default {
     let pausedTime = 0;
 
     const handleFileUpload = (event) => {
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
       const file = event.target.files[0];
       if (file && (file.type === 'audio/mpeg' || file.type === 'audio/mp3')) {
         const reader = new FileReader();
