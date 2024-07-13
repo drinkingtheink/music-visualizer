@@ -1,7 +1,10 @@
 <template>
   <div class="visualizer">
     <header :style="{ borderColor: strokeStyle }">
-      <input type="file" @change="handleFileUpload" />
+      <section class="controls">
+        <label for="fileUpload">Upload:</label>
+        <input id="fileUpload" type="file" @change="handleFileUpload" />
+      </section>
 
       <section class="controls">
         <button class="play" @click="togglePlayback" :disabled="!audioBuffer">
