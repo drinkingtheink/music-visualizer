@@ -1,4 +1,4 @@
-# mp3-visualizer
+# Vusic - music-visualizer
 
 ## Project setup
 ```
