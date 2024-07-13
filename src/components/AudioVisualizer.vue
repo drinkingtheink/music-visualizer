@@ -1,20 +1,22 @@
 <template>
   <div class="visualizer">
-    <input type="file" @change="handleFileUpload" />
-    <button @click="togglePlayback" :disabled="!audioBuffer">
-      {{ isPlaying ? 'Pause' : 'Play' }}
-    </button>
-    <!-- <select v-model="visualizationType">
-      <option value="waveform">Waveform</option>
-      <option value="bars">Bars</option>
-      <option value="circles">Circles</option>
-    </select> -->
-    <section class="controls">
-      <label for="lineWidth">Line Width:</label>
-      <input type="number" v-model="lineWidth" min="1" max="10" />
-      <label for="strokeStyle">Line Color:</label>
-      <input type="color" v-model="strokeStyle" />
-    </section>
+    <header>
+      <input type="file" @change="handleFileUpload" />
+      <button @click="togglePlayback" :disabled="!audioBuffer">
+        {{ isPlaying ? 'Pause' : 'Play' }}
+      </button>
+      <!-- <select v-model="visualizationType">
+        <option value="waveform">Waveform</option>
+        <option value="bars">Bars</option>
+        <option value="circles">Circles</option>
+      </select> -->
+      <section class="controls">
+        <label for="lineWidth">Line Width:</label>
+        <input type="number" v-model="lineWidth" min="1" max="10" />
+        <label for="strokeStyle">Line Color:</label>
+        <input type="color" v-model="strokeStyle" />
+      </section>
+    </header>
 
     <canvas ref="canvas"></canvas>
   </div>
@@ -109,12 +111,6 @@ export default {
         case 'waveform':
           drawWaveform(canvasCtx, WIDTH, HEIGHT);
           break;
-        case 'bars':
-          drawBars(canvasCtx, WIDTH, HEIGHT);
-          break;
-        case 'circles':
-          drawCircles(canvasCtx, WIDTH, HEIGHT);
-          break;
       }
     };
 
@@ -141,30 +137,6 @@ export default {
 
       canvasCtx.lineTo(canvas.value.width, canvas.value.height / 2);
       canvasCtx.stroke();
-    };
-
-    const drawBars = (canvasCtx, WIDTH, HEIGHT) => {
-      const barWidth = (WIDTH / dataArray.value.length) * 2.5;
-      let barHeight;
-      let x = 0;
-
-      for (let i = 0; i < dataArray.value.length; i++) {
-        barHeight = dataArray.value[i] / 2;
-
-        canvasCtx.fillStyle = strokeStyle.value;
-        canvasCtx.fillRect(x, HEIGHT - barHeight / 2, barWidth, barHeight);
-
-        x += barWidth + 1;
-      }
-    };
-
-    const drawCircles = (canvasCtx, WIDTH, HEIGHT) => {
-      const radius = (HEIGHT / 2) * (dataArray.value[0] / 128.0);
-
-      canvasCtx.beginPath();
-      canvasCtx.arc(WIDTH / 2, HEIGHT / 2, radius, 0, 2 * Math.PI, false);
-      canvasCtx.fillStyle = strokeStyle.value;
-      canvasCtx.fill();
     };
 
     onMounted(() => {
@@ -202,10 +174,18 @@ canvas {
   border: none;
 }
 
+header {
+  padding: 20px;
+  background-color: rgba(0,0,0,0.7);
+  max-width: 500px;
+  margin: 0 auto;
+  border-radius: 20px;
+}
+
 .controls {
   display: flex;
   justify-content: center;
-  padding-top: 20px;
+  padding: 20px;
 }
 
 input {
