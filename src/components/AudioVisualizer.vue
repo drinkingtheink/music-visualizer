@@ -274,6 +274,10 @@ input {
   margin: 0 20px;
 }
 
+input[type="number"] {
+  font-size: 1.25rem;
+}
+
 button {
   text-transform: uppercase;
   padding: 10px 30px;
