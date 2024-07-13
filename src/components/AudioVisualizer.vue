@@ -230,7 +230,7 @@ canvas {
   border: none;
   position: absolute;
   top: 0;
-  width: 100vw;
+  width: 110vw;
 }
 
 canvas.top-wave {
