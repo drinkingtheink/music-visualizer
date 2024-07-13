@@ -249,6 +249,7 @@ label {
 
 .canvas-stage {
   position: relative;
+  padding-top: 10rem;
 }
 
 canvas {
@@ -269,12 +270,12 @@ canvas.bottom-wave {
 }
 
 header {
-  padding: 20px;
+  padding: 0 10px;
   background-color: rgba(0,0,0,0.7);
   max-width: 500px;
-  margin: 1rem 0 0 1rem;
+  margin: 0 0 0 1rem;
   border-radius: 0 0 20px 20px;
-  border-top: 10px solid;
+  border-top: 6px solid;
   position: fixed;
   top: 1rem;
   z-index: 100;
