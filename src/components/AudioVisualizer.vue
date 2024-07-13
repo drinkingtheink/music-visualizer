@@ -4,6 +4,11 @@
     <button @click="togglePlayback" :disabled="!audioBuffer">
       {{ isPlaying ? 'Pause' : 'Play' }}
     </button>
+    <select v-model="visualizationType">
+      <option value="waveform">Waveform</option>
+      <option value="bars">Bars</option>
+      <option value="circles">Circles</option>
+    </select>
     <canvas ref="canvas"></canvas>
   </div>
 </template>
@@ -13,19 +18,21 @@ import { ref, onMounted } from 'vue';
 
 export default {
   setup() {
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    let audioContext = null;
     const canvas = ref(null);
     const audioBuffer = ref(null);
     const audioSource = ref(null);
     const analyser = ref(null);
     const dataArray = ref(null);
     const isPlaying = ref(false);
+    const visualizationType = ref('waveform');
     let startTime = 0;
     let pausedTime = 0;
 
     const handleFileUpload = (event) => {
       const file = event.target.files[0];
       if (file && (file.type === 'audio/mpeg' || file.type === 'audio/mp3')) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
         const reader = new FileReader();
         reader.onload = (e) => {
           const arrayBuffer = e.target.result;
@@ -88,12 +95,24 @@ export default {
 
       analyser.value.getByteTimeDomainData(dataArray.value);
 
-      canvasCtx.fillStyle = 'rgb(200, 200, 200)';
-      canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
+      canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
 
+      switch (visualizationType.value) {
+        case 'waveform':
+          drawWaveform(canvasCtx, WIDTH, HEIGHT);
+          break;
+        case 'bars':
+          drawBars(canvasCtx, WIDTH, HEIGHT);
+          break;
+        case 'circles':
+          drawCircles(canvasCtx, WIDTH, HEIGHT);
+          break;
+      }
+    };
+
+    const drawWaveform = (canvasCtx, WIDTH, HEIGHT) => {
       canvasCtx.lineWidth = 2;
-      canvasCtx.strokeStyle = 'rgb(0, 0, 0)';
-
+      canvasCtx.strokeStyle = 'red';
       canvasCtx.beginPath();
 
       const sliceWidth = (WIDTH * 1.0) / dataArray.value.length;
@@ -116,6 +135,30 @@ export default {
       canvasCtx.stroke();
     };
 
+    const drawBars = (canvasCtx, WIDTH, HEIGHT) => {
+      const barWidth = (WIDTH / dataArray.value.length) * 2.5;
+      let barHeight;
+      let x = 0;
+
+      for (let i = 0; i < dataArray.value.length; i++) {
+        barHeight = dataArray.value[i] / 2;
+
+        canvasCtx.fillStyle = 'rgb(' + (barHeight + 100) + ',50,50)';
+        canvasCtx.fillRect(x, HEIGHT - barHeight / 2, barWidth, barHeight);
+
+        x += barWidth + 1;
+      }
+    };
+
+    const drawCircles = (canvasCtx, WIDTH, HEIGHT) => {
+      const radius = (HEIGHT / 2) * (dataArray.value[0] / 128.0);
+
+      canvasCtx.beginPath();
+      canvasCtx.arc(WIDTH / 2, HEIGHT / 2, radius, 0, 2 * Math.PI, false);
+      canvasCtx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+      canvasCtx.fill();
+    };
+
     onMounted(() => {
       canvas.value.width = window.innerWidth;
       canvas.value.height = window.innerHeight;
@@ -127,6 +170,7 @@ export default {
       togglePlayback,
       isPlaying,
       audioBuffer,
+      visualizationType,
     };
   },
 };
@@ -141,10 +185,11 @@ export default {
 canvas {
   display: block;
   margin: 0 auto;
-  border: 1px solid black;
+  border: none;
 }
 
-button {
+button,
+select {
   margin-top: 20px;
 }
 </style>
