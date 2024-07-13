@@ -215,7 +215,6 @@ label {
 
 canvas {
   display: block;
-  /* margin: -200px auto 0 auto; */
   border: none;
   position: absolute;
   top: 0;
