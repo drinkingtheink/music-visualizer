@@ -1,0 +1,150 @@
+<template>
+  <div class="visualizer">
+    <input type="file" @change="handleFileUpload" />
+    <button @click="togglePlayback" :disabled="!audioBuffer">
+      {{ isPlaying ? 'Pause' : 'Play' }}
+    </button>
+    <canvas ref="canvas"></canvas>
+  </div>
+</template>
+
+<script>
+import { ref, onMounted } from 'vue';
+
+export default {
+  setup() {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const canvas = ref(null);
+    const audioBuffer = ref(null);
+    const audioSource = ref(null);
+    const analyser = ref(null);
+    const dataArray = ref(null);
+    const isPlaying = ref(false);
+    let startTime = 0;
+    let pausedTime = 0;
+
+    const handleFileUpload = (event) => {
+      const file = event.target.files[0];
+      if (file && (file.type === 'audio/mpeg' || file.type === 'audio/mp3')) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const arrayBuffer = e.target.result;
+          audioContext.decodeAudioData(arrayBuffer, (buffer) => {
+            audioBuffer.value = buffer;
+          });
+        };
+        reader.readAsArrayBuffer(file);
+      }
+    };
+
+    const playAudio = (resume = false) => {
+      if (!audioBuffer.value) return;
+      if (audioSource.value) audioSource.value.stop();
+
+      audioSource.value = audioContext.createBufferSource();
+      audioSource.value.buffer = audioBuffer.value;
+
+      analyser.value = audioContext.createAnalyser();
+      analyser.value.fftSize = 2048;
+      const bufferLength = analyser.value.frequencyBinCount;
+      dataArray.value = new Uint8Array(bufferLength);
+
+      audioSource.value.connect(analyser.value);
+      analyser.value.connect(audioContext.destination);
+
+      if (resume) {
+        startTime = audioContext.currentTime - pausedTime;
+        audioSource.value.start(0, pausedTime);
+      } else {
+        startTime = audioContext.currentTime;
+        audioSource.value.start();
+      }
+      isPlaying.value = true;
+      drawVisualizer();
+    };
+
+    const pauseAudio = () => {
+      if (!audioSource.value) return;
+      audioSource.value.stop();
+      pausedTime = audioContext.currentTime - startTime;
+      isPlaying.value = false;
+    };
+
+    const togglePlayback = () => {
+      if (isPlaying.value) {
+        pauseAudio();
+      } else {
+        playAudio(pausedTime > 0);
+      }
+    };
+
+    const drawVisualizer = () => {
+      if (!isPlaying.value) return;
+      const canvasCtx = canvas.value.getContext('2d');
+      const WIDTH = canvas.value.width;
+      const HEIGHT = canvas.value.height;
+
+      requestAnimationFrame(drawVisualizer);
+
+      analyser.value.getByteTimeDomainData(dataArray.value);
+
+      canvasCtx.fillStyle = 'rgb(200, 200, 200)';
+      canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
+
+      canvasCtx.lineWidth = 2;
+      canvasCtx.strokeStyle = 'rgb(0, 0, 0)';
+
+      canvasCtx.beginPath();
+
+      const sliceWidth = (WIDTH * 1.0) / dataArray.value.length;
+      let x = 0;
+
+      for (let i = 0; i < dataArray.value.length; i++) {
+        const v = dataArray.value[i] / 128.0;
+        const y = (v * HEIGHT) / 2;
+
+        if (i === 0) {
+          canvasCtx.moveTo(x, y);
+        } else {
+          canvasCtx.lineTo(x, y);
+        }
+
+        x += sliceWidth;
+      }
+
+      canvasCtx.lineTo(canvas.value.width, canvas.value.height / 2);
+      canvasCtx.stroke();
+    };
+
+    onMounted(() => {
+      canvas.value.width = window.innerWidth;
+      canvas.value.height = window.innerHeight;
+    });
+
+    return {
+      canvas,
+      handleFileUpload,
+      togglePlayback,
+      isPlaying,
+      audioBuffer,
+    };
+  },
+};
+</script>
+
+<style scoped>
+.visualizer {
+  text-align: center;
+  margin-top: 50px;
+}
+
+canvas {
+  display: block;
+  margin: 0 auto;
+  border: 1px solid black;
+}
+
+button {
+  margin-top: 20px;
+}
+</style>
