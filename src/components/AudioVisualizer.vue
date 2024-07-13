@@ -2,11 +2,13 @@
   <div class="visualizer">
     <header :style="{ borderColor: strokeStyle }">
       <input type="file" @change="handleFileUpload" />
-      <button @click="togglePlayback" :disabled="!audioBuffer">
-        {{ isPlaying ? 'Pause' : 'Play' }}
-      </button>
 
-      <button @click="clearCanvas">Clear Visualization</button>
+      <section class="controls">
+        <button @click="togglePlayback" :disabled="!audioBuffer">
+          {{ isPlaying ? 'Pause' : 'Play' }}
+        </button>
+        <button @click="clearCanvas">Clear Visualization</button>
+      </section>
       <section class="controls">
         <label for="lineWidth">Line 1 Width:</label>
         <input type="number" v-model="lineWidth" min="1" max="30" />
@@ -169,7 +171,7 @@ export default {
 
       for (let i = 0; i < dataArray.value.length; i++) {
         const v = dataArray.value[i] / 128.0;
-        const y = (v * HEIGHT) / 1;
+        const y = (v * HEIGHT) / 2;
 
         if (i === 0) {
           canvasCtx.moveTo(x, y);
@@ -223,6 +225,7 @@ label {
 
 .canvas-stage {
   position: relative;
+  margin-top: -100px;
 }
 
 canvas {
@@ -236,7 +239,7 @@ canvas {
 
 canvas.top-wave {
   z-index: 10;
-  margin-top: -100px;
+  /* margin-top: -100px; */
 }
 
 canvas.bottom-wave {
@@ -262,5 +265,17 @@ header {
 
 input {
   margin: 0 20px;
+}
+
+button {
+  text-transform: uppercase;
+  padding: 10px 30px;
+  border-radius: 10px;
+  margin-right: 20px;
+  transition: all .3s;
+}
+
+button:hover {
+  transform: scale(1.1);
 }
 </style>
