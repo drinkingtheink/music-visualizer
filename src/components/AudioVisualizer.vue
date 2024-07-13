@@ -1,7 +1,7 @@
 <template>
   <div class="visualizer">
     <header :style="{ borderColor: strokeStyle }">
-      <h1>Vizual Audio</h1>
+      <h1>Pixelphonic ⚡</h1>
       <section class="controls">
         <label for="fileUpload">Upload:</label>
         <input id="fileUpload" type="file" @change="handleFileUpload" />
@@ -11,7 +11,7 @@
         <button class="play" @click="togglePlayback" :disabled="!audioBuffer">
           {{ isPlaying ? 'Pause' : 'Play' }}
         </button>
-        <button @click="clearCanvas">Clear Canvas</button>
+        <button @click="clearCanvas" :disabled="!audioBuffer">Clear Canvas</button>
       </section>
       <section class="controls">
         <label for="lineWidth">Line 1 Width:</label>
