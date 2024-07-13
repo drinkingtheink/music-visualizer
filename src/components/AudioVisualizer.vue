@@ -30,6 +30,7 @@
 
 <script>
 import { ref, onMounted } from 'vue';
+import chroma from "chroma-js";
 
 export default {
   setup() {
@@ -186,8 +187,10 @@ export default {
     onMounted(() => {
       canvas.value.width = window.innerWidth;
       canvas.value.height = window.innerHeight;
+      strokeStyle.value = chroma.random();
       canvas2.value.width = window.innerWidth;
       canvas2.value.height = window.innerHeight;
+      stroke2Style.value = chroma.random();
     });
 
     return {
