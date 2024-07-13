@@ -5,6 +5,8 @@
       <button @click="togglePlayback" :disabled="!audioBuffer">
         {{ isPlaying ? 'Pause' : 'Play' }}
       </button>
+
+      <button @click="clearCanvas">Clear Visualization</button>
       <section class="controls">
         <label for="lineWidth">Line 1 Width:</label>
         <input type="number" v-model="lineWidth" min="1" max="30" />
@@ -103,6 +105,13 @@ export default {
       }
     };
 
+    const clearCanvas = () => {
+      const canvasCtx = canvas.value.getContext('2d');
+      const canvas2Ctx = canvas2.value.getContext('2d');
+      canvasCtx.clearRect(0, 0, canvas.value.width, canvas.value.height);
+      canvas2Ctx.clearRect(0, 0, canvas2.value.width, canvas2.value.height);
+    };
+
     const drawVisualizer = () => {
       if (!isPlaying.value) return;
       const canvasCtx = canvas.value.getContext('2d');
@@ -193,6 +202,7 @@ export default {
       strokeStyle,
       line2Width,
       stroke2Style,
+      clearCanvas,
     };
   },
 };
@@ -210,7 +220,6 @@ label {
 
 .canvas-stage {
   position: relative;
-  margin-top: -200px;
 }
 
 canvas {
@@ -223,6 +232,7 @@ canvas {
 
 canvas.top-wave {
   z-index: 10;
+  margin-top: -100px;
 }
 
 canvas.bottom-wave {
@@ -233,7 +243,7 @@ header {
   padding: 20px;
   background-color: rgba(0,0,0,0.7);
   max-width: 500px;
-  margin: 0 auto;
+  margin: 1rem 0 0 1rem;
   border-radius: 0 0 20px 20px;
   border-top: 10px solid;
   position: relative;
