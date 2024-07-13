@@ -22,7 +22,7 @@ import { ref, onMounted } from 'vue';
 
 export default {
   setup() {
-    let audioContext = null;
+    const audioContext = ref(null);
     const canvas = ref(null);
     const audioBuffer = ref(null);
     const audioSource = ref(null);
@@ -36,13 +36,13 @@ export default {
     let pausedTime = 0;
 
     const handleFileUpload = (event) => {
-      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      audioContext.value = new (window.AudioContext || window.webkitAudioContext)();
       const file = event.target.files[0];
       if (file && (file.type === 'audio/mpeg' || file.type === 'audio/mp3')) {
         const reader = new FileReader();
         reader.onload = (e) => {
           const arrayBuffer = e.target.result;
-          audioContext.decodeAudioData(arrayBuffer, (buffer) => {
+          audioContext.value.decodeAudioData(arrayBuffer, (buffer) => {
             audioBuffer.value = buffer;
           });
         };
@@ -54,22 +54,22 @@ export default {
       if (!audioBuffer.value) return;
       if (audioSource.value) audioSource.value.stop();
 
-      audioSource.value = audioContext.createBufferSource();
+      audioSource.value = audioContext.value.createBufferSource();
       audioSource.value.buffer = audioBuffer.value;
 
-      analyser.value = audioContext.createAnalyser();
+      analyser.value = audioContext.value.createAnalyser();
       analyser.value.fftSize = 2048;
       const bufferLength = analyser.value.frequencyBinCount;
       dataArray.value = new Uint8Array(bufferLength);
 
       audioSource.value.connect(analyser.value);
-      analyser.value.connect(audioContext.destination);
+      analyser.value.connect(audioContext.value.destination);
 
       if (resume) {
-        startTime = audioContext.currentTime - pausedTime;
+        startTime = audioContext.value.currentTime - pausedTime;
         audioSource.value.start(0, pausedTime);
       } else {
-        startTime = audioContext.currentTime;
+        startTime = audioContext.value.currentTime;
         audioSource.value.start();
       }
       isPlaying.value = true;
@@ -79,7 +79,7 @@ export default {
     const pauseAudio = () => {
       if (!audioSource.value) return;
       audioSource.value.stop();
-      pausedTime = audioContext.currentTime - startTime;
+      pausedTime = audioContext.value.currentTime - startTime;
       isPlaying.value = false;
     };
 
@@ -190,6 +190,6 @@ header {
 }
 
 input {
-  margin-right: 20px;
+  margin: 0 20px;
 }
 </style>
