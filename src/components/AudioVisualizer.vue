@@ -4,15 +4,18 @@
     <button @click="togglePlayback" :disabled="!audioBuffer">
       {{ isPlaying ? 'Pause' : 'Play' }}
     </button>
-    <select v-model="visualizationType">
+    <!-- <select v-model="visualizationType">
       <option value="waveform">Waveform</option>
       <option value="bars">Bars</option>
       <option value="circles">Circles</option>
-    </select>
-    <label for="lineWidth">Line Width:</label>
-    <input type="number" v-model="lineWidth" min="1" max="10" />
-    <label for="strokeStyle">Stroke Style:</label>
-    <input type="color" v-model="strokeStyle" />
+    </select> -->
+    <section class="controls">
+      <label for="lineWidth">Line Width:</label>
+      <input type="number" v-model="lineWidth" min="1" max="10" />
+      <label for="strokeStyle">Line Color:</label>
+      <input type="color" v-model="strokeStyle" />
+    </section>
+
     <canvas ref="canvas"></canvas>
   </div>
 </template>
@@ -30,7 +33,7 @@ export default {
     const dataArray = ref(null);
     const isPlaying = ref(false);
     const visualizationType = ref('waveform');
-    const lineWidth = ref(2);
+    const lineWidth = ref(9);
     const strokeStyle = ref('#000000');
     let startTime = 0;
     let pausedTime = 0;
@@ -189,20 +192,23 @@ export default {
   margin-top: 50px;
 }
 
-input,
-button,
-select {
-  margin-top: 20px;
-}
-
 label {
   display: block;
-  margin-top: 20px;
 }
 
 canvas {
   display: block;
   margin: 0 auto;
   border: none;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+}
+
+input {
+  margin-right: 20px;
 }
 </style>
