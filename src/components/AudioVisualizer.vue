@@ -201,7 +201,7 @@ export default {
 <style scoped>
 .visualizer {
   text-align: center;
-  margin-top: 50px;
+  margin-top: 0;
 }
 
 label {
@@ -244,7 +244,7 @@ header {
 .controls {
   display: flex;
   justify-content: center;
-  padding: 20px;
+  padding: 10px;
 }
 
 input {
