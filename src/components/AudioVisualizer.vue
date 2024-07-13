@@ -172,6 +172,8 @@ canvas {
   display: block;
   margin: -200px auto 0 auto;
   border: none;
+  position: relative;
+  z-index: 1;
 }
 
 header {
@@ -181,6 +183,8 @@ header {
   margin: 0 auto;
   border-radius: 0 0 20px 20px;
   border-top: 10px solid;
+  position: relative;
+  z-index: 2;
 }
 
 .controls {
