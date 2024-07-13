@@ -5,11 +5,6 @@
       <button @click="togglePlayback" :disabled="!audioBuffer">
         {{ isPlaying ? 'Pause' : 'Play' }}
       </button>
-      <!-- <select v-model="visualizationType">
-        <option value="waveform">Waveform</option>
-        <option value="bars">Bars</option>
-        <option value="circles">Circles</option>
-      </select> -->
       <section class="controls">
         <label for="lineWidth">Line Width:</label>
         <input type="number" v-model="lineWidth" min="1" max="10" />
