@@ -4,7 +4,7 @@
       <input type="file" @change="handleFileUpload" />
 
       <section class="controls">
-        <button @click="togglePlayback" :disabled="!audioBuffer">
+        <button class="play" @click="togglePlayback" :disabled="!audioBuffer">
           {{ isPlaying ? 'Pause' : 'Play' }}
         </button>
         <button @click="clearCanvas">Clear Visualization</button>
@@ -45,9 +45,9 @@ export default {
     const dataArray = ref(null);
     const isPlaying = ref(false);
     const visualizationType = ref('waveform');
-    const lineWidth = ref(4);
+    const lineWidth = ref(6);
     const strokeStyle = ref('#000000');
-    const line2Width = ref(2);
+    const line2Width = ref(1);
     const stroke2Style = ref('#ffffff');
     let startTime = 0;
     let pausedTime = 0;
@@ -239,7 +239,6 @@ canvas {
 
 canvas.top-wave {
   z-index: 10;
-  /* margin-top: -100px; */
 }
 
 canvas.bottom-wave {
@@ -273,6 +272,10 @@ button {
   border-radius: 10px;
   margin-right: 20px;
   transition: all .3s;
+}
+
+button.play {
+  width: 200px;
 }
 
 button:hover {
