@@ -1,6 +1,6 @@
 <template>
   <div class="visualizer">
-    <header>
+    <header :style="{ borderColor: strokeStyle }">
       <input type="file" @change="handleFileUpload" />
       <button @click="togglePlayback" :disabled="!audioBuffer">
         {{ isPlaying ? 'Pause' : 'Play' }}
@@ -170,7 +170,7 @@ label {
 
 canvas {
   display: block;
-  margin: 0 auto;
+  margin: -200px auto 0 auto;
   border: none;
 }
 
@@ -179,7 +179,8 @@ header {
   background-color: rgba(0,0,0,0.7);
   max-width: 500px;
   margin: 0 auto;
-  border-radius: 20px;
+  border-radius: 0 0 20px 20px;
+  border-top: 10px solid;
 }
 
 .controls {
