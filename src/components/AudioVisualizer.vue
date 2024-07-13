@@ -233,7 +233,6 @@ label {
 
 .canvas-stage {
   position: relative;
-  margin-top: -100px;
 }
 
 canvas {
@@ -260,7 +259,8 @@ header {
   margin: 1rem 0 0 1rem;
   border-radius: 0 0 20px 20px;
   border-top: 10px solid;
-  position: relative;
+  position: fixed;
+  top: 1rem;
   z-index: 100;
 }
 
