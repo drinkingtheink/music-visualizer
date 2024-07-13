@@ -6,14 +6,23 @@
         {{ isPlaying ? 'Pause' : 'Play' }}
       </button>
       <section class="controls">
-        <label for="lineWidth">Line Width:</label>
+        <label for="lineWidth">Line 1 Width:</label>
         <input type="number" v-model="lineWidth" min="1" max="30" />
-        <label for="strokeStyle">Line Color:</label>
+        <label for="strokeStyle">Line 1 Color:</label>
         <input type="color" v-model="strokeStyle" />
+      </section>
+      <section class="controls">
+        <label for="line2Width">Line 2 Width:</label>
+        <input type="number" v-model="line2Width" min="1" max="90" />
+        <label for="stroke2Style">Line 2 Color:</label>
+        <input type="color" v-model="stroke2Style" />
       </section>
     </header>
 
-    <canvas ref="canvas"></canvas>
+    <section class="canvas-stage">
+      <canvas ref="canvas" class="top-wave"></canvas>
+      <canvas ref="canvas2" class="bottom-wave"></canvas>
+    </section>
   </div>
 </template>
 
@@ -24,14 +33,17 @@ export default {
   setup() {
     const audioContext = ref(null);
     const canvas = ref(null);
+    const canvas2 = ref(null);
     const audioBuffer = ref(null);
     const audioSource = ref(null);
     const analyser = ref(null);
     const dataArray = ref(null);
     const isPlaying = ref(false);
     const visualizationType = ref('waveform');
-    const lineWidth = ref(9);
+    const lineWidth = ref(4);
     const strokeStyle = ref('#000000');
+    const line2Width = ref(2);
+    const stroke2Style = ref('#ffffff');
     let startTime = 0;
     let pausedTime = 0;
 
@@ -94,6 +106,7 @@ export default {
     const drawVisualizer = () => {
       if (!isPlaying.value) return;
       const canvasCtx = canvas.value.getContext('2d');
+      const canvasCtx2 = canvas2.value.getContext('2d');
       const WIDTH = canvas.value.width;
       const HEIGHT = canvas.value.height;
 
@@ -106,6 +119,7 @@ export default {
       switch (visualizationType.value) {
         case 'waveform':
           drawWaveform(canvasCtx, WIDTH, HEIGHT);
+          drawWaveform2(canvasCtx2, WIDTH, HEIGHT);
           break;
       }
     };
@@ -135,13 +149,41 @@ export default {
       canvasCtx.stroke();
     };
 
+    const drawWaveform2 = (canvasCtx, WIDTH, HEIGHT) => {
+      canvasCtx.lineWidth = line2Width.value;
+      canvasCtx.strokeStyle = stroke2Style.value;
+      canvasCtx.beginPath();
+
+      const sliceWidth = (WIDTH * 1.0) / dataArray.value.length;
+      let x = 0;
+
+      for (let i = 0; i < dataArray.value.length; i++) {
+        const v = dataArray.value[i] / 128.0;
+        const y = (v * HEIGHT) / 1;
+
+        if (i === 0) {
+          canvasCtx.moveTo(x, y);
+        } else {
+          canvasCtx.lineTo(x, y);
+        }
+
+        x += sliceWidth;
+      }
+
+      canvasCtx.lineTo(canvas2.value.width, canvas2.value.height / 2);
+      canvasCtx.stroke();
+    };
+
     onMounted(() => {
       canvas.value.width = window.innerWidth;
       canvas.value.height = window.innerHeight;
+      canvas2.value.width = window.innerWidth;
+      canvas2.value.height = window.innerHeight;
     });
 
     return {
       canvas,
+      canvas2,
       handleFileUpload,
       togglePlayback,
       isPlaying,
@@ -149,6 +191,8 @@ export default {
       visualizationType,
       lineWidth,
       strokeStyle,
+      line2Width,
+      stroke2Style,
     };
   },
 };
@@ -164,11 +208,25 @@ label {
   display: block;
 }
 
+.canvas-stage {
+  position: relative;
+  margin-top: -200px;
+}
+
 canvas {
   display: block;
-  margin: -200px auto 0 auto;
+  /* margin: -200px auto 0 auto; */
   border: none;
-  position: relative;
+  position: absolute;
+  top: 0;
+  width: 100vw;
+}
+
+canvas.top-wave {
+  z-index: 10;
+}
+
+canvas.bottom-wave {
   z-index: 1;
 }
 
@@ -180,7 +238,7 @@ header {
   border-radius: 0 0 20px 20px;
   border-top: 10px solid;
   position: relative;
-  z-index: 2;
+  z-index: 100;
 }
 
 .controls {
