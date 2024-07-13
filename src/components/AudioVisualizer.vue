@@ -7,19 +7,21 @@
         <button class="play" @click="togglePlayback" :disabled="!audioBuffer">
           {{ isPlaying ? 'Pause' : 'Play' }}
         </button>
-        <button @click="clearCanvas">Clear Visualization</button>
+        <button @click="clearCanvas">Clear Canvas</button>
       </section>
       <section class="controls">
         <label for="lineWidth">Line 1 Width:</label>
         <input type="number" v-model="lineWidth" min="1" max="30" />
         <label for="strokeStyle">Line 1 Color:</label>
         <input type="color" v-model="strokeStyle" />
+        <button class="random" @click="randomizeColor(true)">Random</button>
       </section>
       <section class="controls">
         <label for="line2Width">Line 2 Width:</label>
         <input type="number" v-model="line2Width" min="1" max="90" />
         <label for="stroke2Style">Line 2 Color:</label>
         <input type="color" v-model="stroke2Style" />
+        <button class="random" @click="randomizeColor(false)">Random</button>
       </section>
     </header>
 
@@ -186,6 +188,11 @@ export default {
       canvasCtx.stroke();
     };
 
+    const randomizeColor = (changeColor1) => {
+      if (changeColor1) strokeStyle.value = chroma.random();
+      else stroke2Style.value = chroma.random();
+    };
+
     onMounted(() => {
       canvas.value.width = window.innerWidth;
       canvas.value.height = window.innerHeight;
@@ -208,6 +215,7 @@ export default {
       line2Width,
       stroke2Style,
       clearCanvas,
+      randomizeColor,
     };
   },
 };
@@ -276,6 +284,10 @@ button {
 
 button.play {
   width: 200px;
+}
+
+button.random {
+  padding: 5px 10px;
 }
 
 button:hover {
