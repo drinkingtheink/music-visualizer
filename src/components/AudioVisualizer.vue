@@ -231,6 +231,7 @@ canvas {
   position: absolute;
   top: 0;
   width: 110vw;
+  margin-left: -10px;
 }
 
 canvas.top-wave {
