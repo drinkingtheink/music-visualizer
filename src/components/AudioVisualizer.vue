@@ -280,6 +280,7 @@ button {
   border-radius: 10px;
   margin-right: 20px;
   transition: all .3s;
+  font-weight: bold;
 }
 
 button.play {
