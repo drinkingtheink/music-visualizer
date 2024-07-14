@@ -305,7 +305,7 @@ canvas.bottom-wave {
 }
 
 header {
-  padding: 0 10px;
+  padding: 0 10px 10px 10px;
   background-color: rgba(0,0,0,0.7);
   max-width: 500px;
   margin: 0 0 0 1rem;
@@ -317,7 +317,8 @@ header {
 }
 
 header.line-controls {
-  margin-left: 480px;
+  margin-left: 490px;
+  border-radius: 0 0 20px 0
 }
 
 .controls {
