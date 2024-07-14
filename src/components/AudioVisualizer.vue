@@ -21,6 +21,9 @@
         </button>
         <button @click="clearCanvas" :disabled="!audioBuffer">Clear Canvas</button>
       </section>
+    </header>
+
+    <header class="line-controls" :style="{ borderColor: strokeStyle }">
       <section class="controls">
         <label for="lineWidth">Line 1 Width:</label>
         <input type="number" v-model="lineWidth" min="1" max="30" />
@@ -311,6 +314,10 @@ header {
   position: fixed;
   top: 1rem;
   z-index: 100;
+}
+
+header.line-controls {
+  margin-left: 480px;
 }
 
 .controls {
