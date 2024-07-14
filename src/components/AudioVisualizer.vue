@@ -4,14 +4,14 @@
       <h1>Pixelphonic ⚡</h1>
 
       <section class="controls">
-        <label>Sample Files:</label>
+        <label>Play Samples:</label>
         <div v-for="sample in sampleFiles" :key="sample.name">
           <button @click="handleSampleSelect(sample.url)">{{ sample.name }}</button>
         </div>
       </section>
 
       <section class="controls">
-        <label for="fileUpload">Upload:</label>
+        <label for="fileUpload">Upload a File:</label>
         <input id="fileUpload" type="file" @change="handleFileUpload" />
       </section>
 
