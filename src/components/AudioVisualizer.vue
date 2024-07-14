@@ -32,9 +32,9 @@
         <button class="random" @click="randomizeColor(true)">Random</button>
       </section>
       <section class="controls">
-        <label for="line2Width">Background Lines Width:</label>
+        <label for="line2Width">Background Line Width:</label>
         <input type="number" v-model="line2Width" min="1" max="90" />
-        <label for="stroke2Style">Background Lines Color:</label>
+        <label for="stroke2Style">Background Line Color:</label>
         <input type="color" v-model="stroke2Style" />
         <button class="random" @click="randomizeColor(false)">Random</button>
       </section>
