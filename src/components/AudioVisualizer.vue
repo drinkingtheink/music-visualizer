@@ -328,13 +328,17 @@ header.line-controls {
 }
 
 input {
-  margin: 0 20px;
+  margin: 0 10px;
 }
 
 input[type="number"] {
   font-size: 1.25rem;
   border-radius: 5px;
   padding-left: 10px;
+}
+
+input[type="color"] {
+  width: 150px;
 }
 
 button {
