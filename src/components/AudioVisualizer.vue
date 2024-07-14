@@ -25,16 +25,16 @@
 
     <header class="line-controls" :style="{ borderColor: strokeStyle }">
       <section class="controls">
-        <label for="lineWidth">Line 1 Width:</label>
+        <label for="lineWidth">Foreground Line Width:</label>
         <input type="number" v-model="lineWidth" min="1" max="30" />
-        <label for="strokeStyle">Line 1 Color:</label>
+        <label for="strokeStyle">Foreground Line Color:</label>
         <input type="color" v-model="strokeStyle" />
         <button class="random" @click="randomizeColor(true)">Random</button>
       </section>
       <section class="controls">
-        <label for="line2Width">Line 2 Width:</label>
+        <label for="line2Width">Background Line Width:</label>
         <input type="number" v-model="line2Width" min="1" max="90" />
-        <label for="stroke2Style">Line 2 Color:</label>
+        <label for="stroke2Style">Background Line Color:</label>
         <input type="color" v-model="stroke2Style" />
         <button class="random" @click="randomizeColor(false)">Random</button>
       </section>
