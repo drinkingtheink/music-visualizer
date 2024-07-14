@@ -2,6 +2,14 @@
   <div class="visualizer">
     <header :style="{ borderColor: strokeStyle }">
       <h1>Pixelphonic ⚡</h1>
+
+      <section class="controls">
+        <label>Sample Files:</label>
+        <div v-for="sample in sampleFiles" :key="sample.name">
+          <button @click="handleSampleSelect(sample.url)">{{ sample.name }}</button>
+        </div>
+      </section>
+
       <section class="controls">
         <label for="fileUpload">Upload:</label>
         <input id="fileUpload" type="file" @change="handleFileUpload" />
@@ -39,6 +47,8 @@
 <script>
 import { ref, onMounted } from 'vue';
 import chroma from "chroma-js";
+import sample1 from '../assets/audio/pixelphonic-audio-sample-1.mp3';
+import sample2 from '../assets/audio/pixelphonic-audio-sample-2.mp3';
 
 export default {
   setup() {
@@ -57,6 +67,24 @@ export default {
     const stroke2Style = ref('#ffffff');
     let startTime = 0;
     let pausedTime = 0;
+
+    const sampleFiles = ref([
+      { name: 'Sample 1', url: sample1 },
+      { name: 'Sample 2', url: sample2 },
+    ]);
+
+    const handleSampleSelect = (url) => {
+      if (!audioContext.value) {
+        audioContext.value = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      fetch(url)
+        .then(response => response.arrayBuffer())
+        .then(arrayBuffer => audioContext.value.decodeAudioData(arrayBuffer))
+        .then(buffer => {
+          audioBuffer.value = buffer;
+          playAudio();
+        });
+    };
 
     const handleFileUpload = (event) => {
       audioContext.value = new (window.AudioContext || window.webkitAudioContext)();
@@ -197,6 +225,7 @@ export default {
       else stroke2Style.value = chroma.random();
     };
 
+
     onMounted(() => {
       canvas.value.width = window.innerWidth;
       canvas.value.height = window.innerHeight;
@@ -220,6 +249,8 @@ export default {
       stroke2Style,
       clearCanvas,
       randomizeColor,
+      handleSampleSelect,
+      sampleFiles,
     };
   },
 };
@@ -245,6 +276,7 @@ h1 {
 
 label {
   display: block;
+  margin-right: 20px;
 }
 
 .canvas-stage {
