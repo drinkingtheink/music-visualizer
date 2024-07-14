@@ -1,4 +1,4 @@
-# Vusic - music-visualizer
+# Pixelphonic - Audio File Visualizer
 
 ## Project setup
 ```
