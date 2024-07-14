@@ -1,5 +1,9 @@
 # Pixelphonic - Audio File Visualizer
 
+## Visualizing Audio Into Configurable Artwork
+
+Adjust the colors and thickness of the generated lines to create layered artwork that is unique to the audio being played.
+
 ## Project setup
 ```
 npm install
