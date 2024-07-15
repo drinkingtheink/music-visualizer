@@ -346,6 +346,7 @@ header.line-controls {
   padding: 0.5rem 2rem;
   border-radius: 5px;
   text-decoration: none;
+  font-size: 0.75rem;
 }
 
 .controls.links a:hover {
