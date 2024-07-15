@@ -365,6 +365,7 @@ input[type="number"] {
 
 input[type="color"] {
   width: 150px;
+  height: 40px;
 }
 
 button {
