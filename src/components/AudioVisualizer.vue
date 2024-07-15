@@ -40,7 +40,7 @@
       </section>
       <section class="controls links">
         <a href="https://github.com/drinkingtheink/music-visualizer">About This App</a>
-        <a href="https://github.com/drinkingtheink/music-visualizer">About The Author</a>
+        <a href="https://www.drinkingtheink.com/">About The Author</a>
       </section>
     </header>
 
