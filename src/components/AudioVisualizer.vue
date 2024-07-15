@@ -38,6 +38,10 @@
         <input type="color" v-model="stroke2Style" />
         <button class="random" @click="randomizeColor(false)">Random</button>
       </section>
+      <section class="controls links">
+        <a href="https://github.com/drinkingtheink/music-visualizer">About This App</a>
+        <a href="https://github.com/drinkingtheink/music-visualizer">About The Author</a>
+      </section>
     </header>
 
     <section class="canvas-stage">
@@ -259,8 +263,12 @@ export default {
 };
 </script>
 
-<style scoped>
+<style  >
 @import url('https://fonts.googleapis.com/css2?family=Playwrite+SK:wght@100..400&display=swap');
+
+:root {
+  --panelBg: rgba(0,0,0,0.7);
+}
 
 .visualizer {
   text-align: center;
@@ -306,7 +314,7 @@ canvas.bottom-wave {
 
 header {
   padding: 0 10px 10px 10px;
-  background-color: rgba(0,0,0,0.7);
+  background-color: var(--panelBg);
   max-width: 500px;
   margin: 0 0 0 1rem;
   border-radius: 0 0 20px 20px;
@@ -325,6 +333,23 @@ header.line-controls {
   display: flex;
   justify-content: center;
   padding: 10px;
+}
+
+.controls.links {
+  justify-content: space-evenly;
+}
+
+.controls.links a {
+  color: rgba(255,255,255,0.7);
+  display: block;
+  border: 2px solid rgba(255,255,255,0.3);
+  padding: 0.5rem 2rem;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.controls.links a:hover {
+  color: rgba(255,255,255,1);
 }
 
 input {
@@ -360,5 +385,15 @@ button.random {
 
 button:hover {
   transform: scale(1.1);
+}
+
+footer {
+  background-color: var(--panelBg);
+  padding: 10px;
+  max-width: 400px;
+  position: fixed;
+  top: 1rem;
+  z-index: 100;
+  margin-left: 1000px;
 }
 </style>
