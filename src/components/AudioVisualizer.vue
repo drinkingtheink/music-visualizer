@@ -322,6 +322,7 @@ header {
   position: fixed;
   top: 1rem;
   z-index: 100;
+  transition: all 1s;
 }
 
 header.line-controls {
